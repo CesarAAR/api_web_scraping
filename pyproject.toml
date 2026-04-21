@@ -1,0 +1,12 @@
+[project]
+name = "api-web-scraping"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "camoufox[geoip]>=0.4.11",
+    "fastapi>=0.136.0",
+    "pytest>=9.0.3",
+    "uvicorn>=0.44.0",
+]
