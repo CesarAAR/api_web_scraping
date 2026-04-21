@@ -38,6 +38,34 @@ class CourseraScrapper:
             return None
         else:
             return json_str
+        
+    def parse_filters(self, apollo_json: dict | None = None) -> dict:
+        """
+        Returns the cleaned version of get_filters
+        Strucuture of the json returned by apollo
+        SearchResultQueries:{} 
+            → search(...) [first element, index 0]
+                → facets []
+                → name        ← (filter name)
+                → valuesAndCounts []
+                    → value   ← (filter option)
+                    → count
+        """
+        if not apollo_json:
+            apollo_json = self.get_filters()
+
+        search_queries = apollo_json.get("SearchResultQueries:{}", {})
+        search_key = next(k for k in search_queries if k.startswith("search("))
+        
+        results = search_queries[search_key]
+        
+        filters = {}
+        for facet in results[0]["facets"]:
+            name = facet["name"]
+            values = [v["value"] for v in facet["valuesAndCounts"]]
+            filters[name] = values
+        
+        return filters
     
 
     def close(self):
@@ -47,5 +75,5 @@ class CourseraScrapper:
 
 if __name__ == "__main__":
     coursera_scrapper = CourseraScrapper(headless=False)
-    filters = coursera_scrapper.get_filters()
+    filters = coursera_scrapper.parse_filters()
     print(filters)
