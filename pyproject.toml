@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "bs4>=0.0.2",
     "camoufox[geoip]>=0.4.11",
     "fastapi>=0.136.0",
     "pytest>=9.0.3",
